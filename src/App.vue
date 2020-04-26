@@ -1,32 +1,19 @@
 <template lang="pug">
-  v-app(dark)
+  v-app
+    Header
     v-content
-      v-container
-        DialogTodoItem(:isOpen='isOpen' @toggleDialog='toggleDialog' :item='{}')
-        v-btn(@click='toggleDialog')
-          | click
+      router-view
 </template>
 
 <script>
-import TodoItem from "./components/TodoItem";
-import DialogTodoItem from "@/components/DialogTodoItem";
+import Header from "@/components/Header";
 
 export default {
   name: "App",
-
   components: {
-    TodoItem,
-    DialogTodoItem,
+    Header,
   },
-
-  data: () => ({
-    //
-    isOpen: true,
-  }),
-  methods: {
-    toggleDialog() {
-      this.isOpen = !this.isOpen;
-    },
-  },
+  data: () => ({}),
+  methods: {},
 };
 </script>
