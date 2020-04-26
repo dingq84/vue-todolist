@@ -15,6 +15,8 @@
           label.mx-2.subtitle-2.text-no-wrap 完成
           v-checkbox(v-model='todoItem.completed' hide-details solo :disabled='!isEdit')
       v-card-text.d-flex.align-center.justify-space-between.my-2
+        DatePicker(:date.sync='todoItem.startDate' :disabled='!isEdit' label='起始')
+        DatePicker(v-if='todoItem.endDate' :date.sync='todoItem.endDate' :disabled='!isEdit' label='完成')
       v-card-text.d-flex.align-center.my-2
         label.mx-2.subtitle-2.text-no-wrap 內容
         v-textarea(v-model='todoItem.context' solo no-resize counter :disabled='!isEdit')
@@ -27,9 +29,13 @@
 </template>
 
 <script>
+import DatePicker from "@/components/DatePicker";
+
 export default {
   name: "DialogTodoItem",
-  components: {},
+  components: {
+    DatePicker,
+  },
   props: {
     isOpen: {
       type: Boolean,
