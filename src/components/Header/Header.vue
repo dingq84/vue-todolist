@@ -12,11 +12,13 @@
           hide-details
           @keydown.enter.native='searchTodo'
         )
-      v-btn.addBtn(icon @click.native='addTodoItem')
+      v-btn.addBtn(icon @click.native='openDialog')
         v-icon
           | mdi-plus
       v-spacer
-      DialogTodoItem.dialog(v-if='isOpen' :isOpen='isOpen' mode='create' :item='item')
+      DialogTodoItem.dialog(v-if='isOpen' :isOpen.sync='isOpen' mode='create' :item='item')
+        template(v-slot='{ isDisabled }')
+          v-btn(color='primary' text @click='addTodoItem' :disabled='isDisabled') 新增
 </template>
 
 <script>
@@ -38,11 +40,14 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    addTodoItem() {
+    openDialog() {
       this.isOpen = true;
       this.item = this.$store.getters.emptyTodoItem();
     },
     searchTodo() {},
+    addTodoItem() {
+      // this.$store.
+    },
   },
 };
 </script>
