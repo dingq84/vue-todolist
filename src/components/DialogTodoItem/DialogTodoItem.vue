@@ -7,10 +7,11 @@
             div.d-flex.align-center.my-2
               v-text-field.headline(v-model='todoItem.name' :disabled='!isEdit' outlined hide-details dark)
           v-col(cols='12' sm='4' align-self='center')
-            //- v-select(:items='' label='專案' dense solo hide-details :disabled='!isEdit')
+            v-select(:items='projectsOptions' v-model='todoItem.project' label='專案' dense solo hide-details :disabled='!isEdit')
       v-card-text.d-flex.align-center.justify-space-between.my-2
         div.d-flex.algin-center.my-2
           label.mx-2.subtitle-2.text-no-wrap(:style='{ lineHeight: "38px" }') 優先序
+          v-select(:items='priorityOptions' v-model='todoItem.priority' :disabled='!isEdit' hide-details dense solo)
         div.d-flex.align-center.my-2
           label.mx-2.subtitle-2.text-no-wrap 完成
           v-checkbox(v-model='todoItem.complete' hide-details solo :disabled='!isEdit')
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DatePicker from "@/components/DatePicker";
 
 export default {
@@ -57,10 +59,10 @@ export default {
     return {
       isEdit: ["create", "edit"].includes(this.mode),
       todoItem: { ...this.item },
-      isDisabled: !this.isEdit,
     };
   },
   computed: {
+    ...mapGetters(["priorityOptions", "projectsOptions"]),
     _isOpen: {
       get() {
         return this.isOpen;
@@ -69,12 +71,11 @@ export default {
         this.$emit("update:isOpen", !this.isOpen);
       },
     },
-  },
-  watch: {
-    todoItem() {
-      console.log(this.todoItem);
+    isDisabled() {
+      return Object.values(this.todoItem).some(props => props === "");
     },
   },
+  watch: {},
   methods: {},
 };
 </script>

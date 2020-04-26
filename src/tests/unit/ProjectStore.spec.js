@@ -67,4 +67,13 @@ describe("Project stroe", () => {
       expect(store.state.projects).toContain(newProjectA);
     });
   });
+
+  describe("Getter testing", () => {
+    it("ProjectsOptions should equal [{ value: project.id, text: project.name }, ]", () => {});
+    store.dispatch("addProject", "project-a");
+    store.dispatch("addProject", "project-b");
+    const projects = store.state.projects;
+    expect(projects.map(project => ({ value: project.id, text: project.name }))).toEqual(store.getters.projectsOptions);
+    store.dispatch("resetStore");
+  });
 });

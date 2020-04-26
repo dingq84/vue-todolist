@@ -1,19 +1,54 @@
 import Vuex from "vuex";
 import { shallowMount } from "@vue/test-utils";
 
-import { todoStore } from "@/store/todo.store.js";
+import { todoStore } from "@/store/todo.store";
+import { projectStore } from "@/store/project.store";
+import { priorityStore } from "@/store/priority.store";
+
 import DialogTodoItem from "@/components/DialogTodoItem";
 
 describe("DialogTodoItem.vue", () => {
+  const store = new Vuex.Store({ modules: { todo: todoStore, project: projectStore, priority: priorityStore } });
+  const emptyTodoItem = store.getters.emptyTodoItem();
+  const mountComponent = props =>
+    shallowMount(DialogTodoItem, {
+      store,
+      ...props,
+    });
+  describe("When mode is create or edit, the submitButton is disabled if the form is not completed", () => {
+    it("IsDisabled will be true default", () => {
+      const wrapper = shallowMount(DialogTodoItem, {
+        store,
+        propsData: {
+          isOpen: true,
+          mode: "create",
+          item: emptyTodoItem,
+        },
+      });
+      expect(wrapper.vm.isDisabled).toBe(true);
+    });
+
+    it("Completed the form, the isDisabled will be false", () => {
+      const wrapper = mountComponent({
+        propsData: {
+          isOpen: true,
+          mode: "create",
+          item: Object.keys(emptyTodoItem).reduce(
+            (accumulate, current) => ({ ...accumulate, [current]: emptyTodoItem[current] === "" ? "test" : emptyTodoItem[current] }),
+            {}
+          ),
+        },
+      });
+      expect(wrapper.vm.isDisabled).toBe(false);
+    });
+  });
   describe("Emitting update:isOpen testing", () => {
     afterEach(() => {
       mockUpdateIsOpen.mockReset();
     });
 
     const mockUpdateIsOpen = jest.fn();
-    const store = new Vuex.Store({ modules: { todo: todoStore } });
-    const emptyTodoItem = store.getters.emptyTodoItem();
-    const wrapper = shallowMount(DialogTodoItem, {
+    const wrapper = mountComponent({
       propsData: {
         isOpen: true,
         item: emptyTodoItem,

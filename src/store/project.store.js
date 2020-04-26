@@ -5,7 +5,11 @@ export const projectStore = {
   state: {
     projects: [],
   },
-  getters: {},
+  getters: {
+    projectsOptions(state) {
+      return state.projects.map(project => ({ value: project.id, text: project.name }));
+    },
+  },
   mutations: {
     addProject(state, payload) {
       state.projects.push({ id: uuidv4(), name: payload });
