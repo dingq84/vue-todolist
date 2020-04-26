@@ -33,7 +33,11 @@ export const todoStore = {
     },
     editTodoItem(state, payload) {
       const index = state.todos.findIndex(todo => todo.id === payload.id);
-      Vue.set(state.todos, index, payload);
+      const newTodoItem = { ...state.todos[index], ...payload };
+      if (newTodoItem.complete !== Boolean(newTodoItem.endDate)) {
+        newTodoItem.endDate = newTodoItem.complete ? new Date() : null;
+      }
+      Vue.set(state.todos, index, newTodoItem);
     },
   },
   actions: {

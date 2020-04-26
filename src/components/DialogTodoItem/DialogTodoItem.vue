@@ -13,7 +13,7 @@
           label.mx-2.subtitle-2.text-no-wrap(:style='{ lineHeight: "38px" }') 優先序
         div.d-flex.align-center.my-2
           label.mx-2.subtitle-2.text-no-wrap 完成
-          v-checkbox(v-model='todoItem.completed' hide-details solo :disabled='!isEdit')
+          v-checkbox(v-model='todoItem.complete' hide-details solo :disabled='!isEdit')
       v-card-text.d-flex.align-center.justify-space-between.my-2
         DatePicker(:date.sync='todoItem.startDate' :disabled='!isEdit' label='起始')
         DatePicker(v-if='todoItem.endDate' :date.sync='todoItem.endDate' :disabled='!isEdit' label='完成')
@@ -57,6 +57,7 @@ export default {
     return {
       isEdit: ["create", "edit"].includes(this.mode),
       todoItem: { ...this.item },
+      isDisabled: !this.isEdit,
     };
   },
   computed: {
@@ -68,11 +69,12 @@ export default {
         this.$emit("update:isOpen", !this.isOpen);
       },
     },
-    isDisabled() {
-      return true;
+  },
+  watch: {
+    todoItem() {
+      console.log(this.todoItem);
     },
   },
-  watch: {},
   methods: {},
 };
 </script>

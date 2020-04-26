@@ -43,7 +43,7 @@ describe("TodoItem.vue", () => {
     });
 
     it("UpdateComplete arguments shoule be id", () => {
-      expect(mockUpdateComplete).toHaveBeenCalledWith(id);
+      expect(mockUpdateComplete).toHaveBeenCalledWith(id, !completed);
     });
   });
 

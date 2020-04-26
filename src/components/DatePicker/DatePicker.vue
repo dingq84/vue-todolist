@@ -12,7 +12,7 @@
     template(v-slot:activator='{ on }')
       div.d-flex.align-center.my-2
         label.mx-2.subtitle-2.text-no-wrap {{ label }}
-        v-text-field(readonly :disabled='!disabled' solo :value='dateVal' v-on='on' hide-details)
+        v-text-field(readonly :disabled='disabled' solo :value='dateVal' v-on='on' hide-details)
     v-date-picker(data-testId='datePicker' locale='en-in' v-model='dateVal' no-title @input='dateMenu = false')
 </template>
 

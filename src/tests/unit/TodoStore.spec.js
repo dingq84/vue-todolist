@@ -60,7 +60,14 @@ describe("Todo store", () => {
     it("Target should be updated", () => {
       target.name = "updated";
       store.dispatch("editTodoItem", target);
-      expect(store.state.todos).toContain(target);
+      expect(store.state.todos[0]).toMatchObject(target);
+    });
+
+    it("Toggle complete prop should update the endDate prop", () => {
+      expect(target.endDate).toBeNull();
+      target.complete = true;
+      store.dispatch("editTodoItem", target);
+      expect(store.state.todos[0]).not.toBeNull();
     });
   });
 });

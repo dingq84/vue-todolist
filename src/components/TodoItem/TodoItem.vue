@@ -1,6 +1,6 @@
 <template lang="pug">
   .todo-item(@click.self='openDialog') {{ name }}
-    v-checkbox.my-checkbox(:input-value='completed' @change='updateCompleted')
+    v-checkbox.my-checkbox(:input-value='complete' @change='updateComplete')
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
       type: String,
       required: true,
     },
-    completed: {
+    complete: {
       type: Boolean,
       default: false,
     },
@@ -27,8 +27,8 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    updateCompleted() {
-      this.$emit("updateComplete", this.id);
+    updateComplete() {
+      this.$emit("updateComplete", this.id, !this.complete);
     },
     openDialog() {
       this.$emit("openDialog", this.id);

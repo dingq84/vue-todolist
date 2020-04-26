@@ -1,6 +1,6 @@
 <template lang="pug">
   .todo-list
-    TodoItem(v-for='todo in todos' :key='todo.id' :id='todo.id' :name='todo.name' :completed='todo.completed')
+    TodoItem(v-for='todo in todos' :key='todo.id' :id='todo.id' :name='todo.name' :completed='todo.complete' @updateComplete='updateComplete')
 </template>
 
 <script>
@@ -17,10 +17,15 @@ export default {
   },
   computed: {
     todos() {
-      return this.$store.state.todos;
+      return this.$store.state.todo.todos;
     },
   },
   watch: {},
-  methods: {},
+  methods: {
+    updateComplete(id, complete) {
+      const endDate = complete ? new Date() : null;
+      this.$store.dispatch("editTodoItem", { id, complete, endDate });
+    },
+  },
 };
 </script>

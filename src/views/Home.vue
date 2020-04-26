@@ -2,16 +2,14 @@
   div.d-flex.home
     div.green.sidebar
     div.blue.flex-grow-1
-      TodoList
+      router-link(to='/search') search 
+      router-link(to='/about') about
 </template>
 
 <script>
-import TodoList from "@/components/TodoList";
 export default {
   name: "Home",
-  components: {
-    TodoList,
-  },
+  components: {},
 };
 </script>
 
