@@ -2,7 +2,10 @@
   v-app
     Header
     v-content
-      router-view
+      div.d-flex.content
+        div.green.sidebar
+        div.blue.flex-grow-1
+          router-view
 </template>
 
 <script>
@@ -17,3 +20,12 @@ export default {
   methods: {},
 };
 </script>
+
+<style scoped>
+.content {
+  height: 100%;
+}
+.sidebar {
+  width: 350px;
+}
+</style>
