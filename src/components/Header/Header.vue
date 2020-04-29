@@ -10,13 +10,13 @@
           solo
           placeholder="搜尋名稱或內容"
           hide-details
-          @keydown.enter.native='searchTodo'
+          @keydown.enter.native='(event) => search && searchTodo(event)'
         )
       v-btn.addBtn(icon @click.native='openDialog')
         v-icon
           | mdi-plus
       v-spacer
-      DialogTodoItem.dialog(v-if='isOpen' :isOpen.sync='isOpen' mode='create' :item='item')
+      DialogTodoItem.dialog(v-if='isOpen' :isOpen.sync='isOpen' v-bind.sync='item' mode='create')
         template(v-slot='{ isDisabled }')
           v-btn(color='primary' text @click='addTodoItem' :disabled='isDisabled') 新增
 </template>
@@ -44,8 +44,11 @@ export default {
       this.isOpen = true;
       this.item = this.$store.getters.emptyTodoItem();
     },
-    searchTodo() {},
+    searchTodo() {
+      this.$router.push({ path: "/search", query: { name: this.search } });
+    },
     addTodoItem() {
+      console.log(this.item);
       // this.$store.
     },
   },

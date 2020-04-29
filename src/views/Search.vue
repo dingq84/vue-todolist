@@ -1,5 +1,7 @@
 <template lang="pug">
-  TodoList
+  div
+    h1 Search
+    TodoList
 </template>
 <script>
 import TodoList from "@/components/TodoList";
