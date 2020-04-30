@@ -83,6 +83,7 @@ describe("DialogTodoItem.vue", () => {
     const mockUpdatePriority = jest.fn();
     const mockUpdateProject = jest.fn();
     const mockUpdateStartDate = jest.fn();
+    const mockUpdateEndDate = jest.fn();
 
     beforeAll(() => {
       const app = document.createElement("div");
@@ -104,6 +105,7 @@ describe("DialogTodoItem.vue", () => {
           "update:priority": mockUpdatePriority,
           "update:project": mockUpdateProject,
           "update:startDate": mockUpdateStartDate,
+          "update:endDate": mockUpdateEndDate,
         },
       });
     });
@@ -148,13 +150,20 @@ describe("DialogTodoItem.vue", () => {
       expect(mockUpdateProject).toHaveBeenCalledWith("test");
     });
 
-    it("Updating startDate field should call updateStartDate", async () => {
+    it("Emitting the update:startDate event should call updateStartDate", async () => {
       const date = new Date();
-      const startDatePicker = wrapper.find("[data-testId='startDate']");
-      startDatePicker.setValue(date);
+      wrapper.vm.$emit("update:startDate", date);
       await wrapper.vm.$nextTick();
       expect(mockUpdateStartDate).toHaveBeenCalledWith(date);
       expect(mockUpdateStartDate).toHaveBeenCalledTimes(1);
+    });
+
+    it("Emitting the update:endDate event should call updateEndDate", async () => {
+      const date = new Date();
+      wrapper.vm.$emit("update:endDate", date);
+      await wrapper.vm.$nextTick();
+      expect(mockUpdateEndDate).toHaveBeenCalledWith(date);
+      expect(mockUpdateEndDate).toHaveBeenCalledTimes(1);
     });
   });
 });
