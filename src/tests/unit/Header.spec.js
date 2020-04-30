@@ -36,10 +36,15 @@ describe("Header.vue", () => {
       expect(wrapper.vm.item).not.toEqual({});
     });
 
-    it("CLick the addTodoItem to adding todo item to store", () => {
+    it("Clicking the addTodoItem to adding todo item to store", () => {
       const okButton = wrapper.find("[data-testId='ok-button']");
       okButton.vm.$emit("click");
       expect(wrapper.vm.$store.state.todo.todos).toHaveLength(1);
+    });
+
+    it("After clicking the ok button, dialog should be not existed", () => {
+      const dialog = wrapper.find(".dialog");
+      expect(dialog.exists()).not.toBe(true);
     });
   });
 

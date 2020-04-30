@@ -54,10 +54,15 @@
           :date='startDate' 
           @update:date='(value) => { $emit("update:startDate", value) }'
           :disabled='!isEdit'
-          data-testId="startDate" 
           label='起始'
         )
-        //- DatePicker(v-if='_item.endDate' :date.sync='_item.endDate' :disabled='!isEdit' label='完成')
+        DatePicker(
+          v-if='endDate'
+          :date='endDate'
+          :disabled='!isEdit'
+          @update:date='(value) => { $emit("update:endDate", value) }'
+          label='完成'
+        )
       v-card-text.d-flex.align-center.my-2
         label.mx-2.subtitle-2.text-no-wrap 內容
         v-textarea(

@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "lint": "vue-cli-service lint",
     "plop": "plop --plopfile ./plop/index.js"
   },

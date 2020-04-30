@@ -55,6 +55,7 @@ export default {
     },
     addTodoItem() {
       this.$store.dispatch("addTodoItem", this.item);
+      this.isOpen = false;
     },
   },
 };
