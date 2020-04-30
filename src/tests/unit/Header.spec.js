@@ -1,17 +1,32 @@
 import Vuex from "vuex";
-import { shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
+import { shallowMount, mount } from "@vue/test-utils";
 
-// import router from "@/router";
 import { todoStore } from "@/store/todo.store.js";
+import { priorityStore } from "@/store/priority.store.js";
+import { projectStore } from "@/store/project.store.js";
+
 import Header from "@/components/Header";
 
+const store = new Vuex.Store({ modules: { todo: todoStore, priority: priorityStore, project: projectStore } });
+
 describe("Header.vue", () => {
-  const store = new Vuex.Store({ modules: { todo: todoStore } });
   describe("Adding todo item", () => {
-    const wrapper = shallowMount(Header, { store });
-    const addingBtn = wrapper.find(".addBtn");
-    addingBtn.trigger("click");
-    wrapper.vm.$nextTick();
+    let wrapper;
+    beforeAll(() => {
+      const vuetify = new Vuetify();
+      wrapper = mount(Header, {
+        store,
+        vuetify,
+        scopedSlots: {
+          default: "<p>{{props.isDisabled}}</p>",
+        },
+      });
+      const addingBtn = wrapper.find(".addBtn");
+      addingBtn.trigger("click");
+      wrapper.vm.$nextTick();
+    });
+
     it("Clicking the adding button should open dialog", () => {
       const dialog = wrapper.find(".dialog");
       expect(dialog.exists()).toBe(true);
@@ -19,6 +34,12 @@ describe("Header.vue", () => {
 
     it("After clicking th adding button, the item should not be empty ", () => {
       expect(wrapper.vm.item).not.toEqual({});
+    });
+
+    it("CLick the addTodoItem to adding todo item to store", () => {
+      const okButton = wrapper.find("[data-testId='ok-button']");
+      okButton.vm.$emit("click");
+      expect(wrapper.vm.$store.state.todo.todos).toHaveLength(1);
     });
   });
 

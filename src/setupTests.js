@@ -6,3 +6,7 @@ import Vuex from "vuex";
 Vue.use(Vuetify);
 Vue.use(Vuex);
 // Vue.use(VueRouter);
+
+const app = document.createElement("div");
+app.setAttribute("data-app", true);
+document.body.append(app);

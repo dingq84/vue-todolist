@@ -18,7 +18,13 @@
       v-spacer
       DialogTodoItem.dialog(v-if='isOpen' :isOpen.sync='isOpen' v-bind.sync='item' mode='create')
         template(v-slot='{ isDisabled }')
-          v-btn(color='primary' text @click='addTodoItem' :disabled='isDisabled') 新增
+          v-btn(
+            @click='addTodoItem'
+            :disabled='isDisabled'
+            data-testId='ok-button'
+            color='primary' 
+            text
+          ) 新增
 </template>
 
 <script>
@@ -48,8 +54,7 @@ export default {
       this.$router.push({ path: "/search", query: { name: this.search } });
     },
     addTodoItem() {
-      console.log(this.item);
-      // this.$store.
+      this.$store.dispatch("addTodoItem", this.item);
     },
   },
 };

@@ -86,9 +86,9 @@ describe("DialogTodoItem.vue", () => {
     const mockUpdateEndDate = jest.fn();
 
     beforeAll(() => {
-      const app = document.createElement("div");
-      app.setAttribute("data-app", true);
-      document.body.append(app);
+      // const app = document.createElement("div");
+      // app.setAttribute("data-app", true);
+      // document.body.append(app);
 
       wrapper = mount(DialogTodoItem, {
         store,
