@@ -46,9 +46,7 @@ export default {
     },
   },
   data() {
-    return {
-      isDisabled: ["create", "edit"].includes(this.mode) && this.name === "",
-    };
+    return {};
   },
   computed: {
     _isOpen: {
@@ -58,6 +56,9 @@ export default {
       set(val) {
         this.$emit("update:isOpen", val);
       },
+    },
+    isDisabled() {
+      return ["create", "edit"].includes(this.mode) && this.name === "";
     },
   },
   watch: {},

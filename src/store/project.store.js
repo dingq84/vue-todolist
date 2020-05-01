@@ -9,10 +9,16 @@ export const projectStore = {
     projectsOptions(state) {
       return state.projects.map(project => ({ value: project.id, text: project.name }));
     },
+    emptyProject() {
+      return () => ({
+        id: uuidv4(),
+        name: "",
+      });
+    },
   },
   mutations: {
     addProject(state, payload) {
-      state.projects.push({ id: uuidv4(), name: payload });
+      state.projects.push(payload);
     },
     removeProject(state, payload) {
       state.projects = state.projects.filter(project => project.id !== payload);

@@ -26,7 +26,9 @@ describe("Project stroe", () => {
 
     const name = "project-a";
     it("Adding project", () => {
-      store.dispatch("addProject", name);
+      const projectA = store.getters.emptyProject();
+      projectA.name = name;
+      store.dispatch("addProject", projectA);
       expect(store.state.projects.filter(project => project.name === name)).toHaveLength(1);
     });
 
@@ -55,8 +57,12 @@ describe("Project stroe", () => {
 
   describe("Edit project", () => {
     it("There are two project in store", () => {
-      store.dispatch("addProject", "project-a");
-      store.dispatch("addProject", "project-b");
+      const projecta = store.getters.emptyProject();
+      const projectb = store.getters.emptyProject();
+      projecta.name = "project-a";
+      projectb.name = "project-b";
+      store.dispatch("addProject", projecta);
+      store.dispatch("addProject", projectb);
       expect(store.state.projects).toHaveLength(2);
     });
 
@@ -65,15 +71,27 @@ describe("Project stroe", () => {
       const newProjectA = { id: projectA.id, name: "new-project-a" };
       store.dispatch("editProject", newProjectA);
       expect(store.state.projects).toContain(newProjectA);
+      store.dispatch("resetStore");
     });
   });
 
   describe("Getter testing", () => {
-    it("ProjectsOptions should equal [{ value: project.id, text: project.name }, ]", () => {});
-    store.dispatch("addProject", "project-a");
-    store.dispatch("addProject", "project-b");
-    const projects = store.state.projects;
-    expect(projects.map(project => ({ value: project.id, text: project.name }))).toEqual(store.getters.projectsOptions);
-    store.dispatch("resetStore");
+    it("ProjectsOptions should equal [{ value: project.id, text: project.name }, ]", () => {
+      store.dispatch("addProject", "project-a");
+      store.dispatch("addProject", "project-b");
+      const projects = store.state.projects;
+      expect(projects.map(project => ({ value: project.id, text: project.name }))).toEqual(store.getters.projectsOptions);
+      store.dispatch("resetStore");
+    });
+
+    it("EmptyProject shoule equal a empty project object", () => {
+      const emptyProject = store.getters.emptyProject();
+      expect(emptyProject).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: expect.any(String),
+        })
+      );
+    });
   });
 });
