@@ -52,6 +52,18 @@ describe("ProjectList.vue", () => {
       const openDialog = wrapper.find("[data-testId='openDialog']");
       openDialog.trigger("click");
       await wrapper.vm.$nextTick();
+
+      global.console = {
+        warn: jest.fn(),
+        error: jest.fn(),
+        log: jest.fn(),
+        info: jest.fn(),
+        debug: jest.fn(),
+      };
+    });
+
+    afterAll(() => {
+      jest.resetAllMocks();
     });
 
     it("The adding button should be disabled without completeing project form", () => {
@@ -73,6 +85,18 @@ describe("ProjectList.vue", () => {
       addingButton.trigger("click");
       await wrapper.vm.$nextTick();
       expect(wrapper.vm.projects).toHaveLength(1);
+    });
+
+    it('Adding duplicated project name, the error should be "專案名稱已存在"', async () => {
+      wrapper.vm.openDialog();
+      await wrapper.vm.$nextTick();
+      const dialog = wrapper.find("[data-testId='dialog']");
+      dialog.vm.$emit("update:name", "test");
+      await wrapper.vm.$nextTick();
+      const addingButton = wrapper.find("[data-testId='adding-button']");
+      addingButton.trigger("click");
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.error).toContain("專案名稱已存在");
     });
   });
 
@@ -105,8 +129,10 @@ describe("ProjectList.vue", () => {
 
   describe("itemOpenDialog method testing", () => {
     const wrapper = shallowMount(ProjectList, { store });
-    const mockOpenDialog = jest.spyOn(wrapper.vm, "itemOpenDialog");
-    wrapper.setMethods({ itemOpenDialog: mockOpenDialog });
+    beforeAll(() => {
+      const mockOpenDialog = jest.spyOn(wrapper.vm, "itemOpenDialog");
+      wrapper.setMethods({ itemOpenDialog: mockOpenDialog });
+    });
 
     it("Dialog is not existed by default", () => {
       const dialog = wrapper.find("[data-testId='dialog']");

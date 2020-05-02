@@ -85,4 +85,29 @@ describe("DialogProjectItem.vue", () => {
       expect(mockUpdateName).toHaveBeenCalledWith("123123");
     });
   });
+
+  describe("Error testing", () => {
+    beforeAll(() => {
+      global.console = {
+        log: jest.fn(),
+        error: jest.fn(),
+        warn: jest.fn(),
+        info: jest.fn(),
+        debug: jest.fn(),
+      };
+    });
+
+    afterAll(() => {
+      jest.clearAllMocks();
+    });
+
+    it("Props error is not empty, it should display waring text", () => {
+      const wrapper = shallowMount(DialogProjectItem, { propsData: { isOpen: true, id: "123", error: "test error" } });
+      expect(wrapper.find("[data-testId='error']").text()).toBe("test error");
+    });
+
+    it("Passing unknown mode, it should throw erorr", () => {
+      expect(() => shallowMount(DialogProjectItem, { propsData: { isOpen: true, id: "123", mode: "unknown mode" } })).toThrow();
+    });
+  });
 });

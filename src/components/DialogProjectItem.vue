@@ -11,6 +11,7 @@
           outlined 
           hide-details
         )
+      p.ma-0.text-center.subtitle-1.red--text(v-if='error' data-testId='error') {{ error }}
       v-divider
       v-card-actions
         v-spacer
@@ -40,6 +41,10 @@ export default {
       required: true,
     },
     name: {
+      type: String,
+      default: "",
+    },
+    error: {
       type: String,
       default: "",
     },

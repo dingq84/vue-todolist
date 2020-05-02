@@ -19,6 +19,7 @@
       :isOpen.sync='isOpen'
       v-bind.sync='dialogData'
       data-testId='dialog'
+      :error='error'
     )
       template(v-slot='{ isDisabled }')
         v-btn(
@@ -46,6 +47,7 @@ export default {
       isOpen: false,
       mode: "",
       dialogData: {},
+      error: "",
     };
   },
   computed: {
@@ -66,9 +68,15 @@ export default {
       this.mode = "create";
     },
     addProjectItem() {
-      this.$store.dispatch("addProject", this.dialogData);
-      this.dialogData = "";
-      this.isOpen = false;
+      try {
+        console.log(this.dialogData.name);
+        this.$store.dispatch("addProject", this.dialogData);
+        this.dialogData = "";
+        this.isOpen = false;
+      } catch (error) {
+        console.log(error);
+        this.error = "專案名稱已存在";
+      }
     },
   },
 };
