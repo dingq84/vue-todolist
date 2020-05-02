@@ -1,6 +1,9 @@
 <template lang="pug">
-  router-link(:to='`/search?project=${name}`' data-testId='link')
-    p(data-testId='name') {{ name }}
+  router-link.link.d-flex.pa-2.ma-2.justify-space-between.align-center(
+    :to='`/search?project=${name}`'
+    data-testId='link'
+  )
+    p.mb-0.title.blue-grey--text.text--darken-1(data-testId='name') {{ name }}
     v-btn(icon @click='openDialog' data-testId='openDialog')
       v-icon mdi-pencil-outline
 </template>
@@ -27,8 +30,12 @@ export default {
   methods: {
     openDialog() {
       this.$emit("openDialog", this.$props);
-      // this.isOpen = true;
     },
   },
 };
 </script>
+<style scoped>
+.link {
+  text-decoration: noen;
+}
+</style>

@@ -1,15 +1,19 @@
 <template lang="pug">
   div
-    h1(data-testId='title') 專案列表
-    ProjectItem(
-      v-for='project in projects'
-      :key='project.id'
-      :name='project.name'
-      :id='project.id'
-      @openDialog='itemOpenDialog'
-    )
-    v-btn(data-testId='openDialog' @click='openDialog')
-      v-icon mdi-plus
+    h2.font-weight-bold.headline(data-testId='title') 專案列表
+    v-divider.mt-2.mb-4
+    div.projectList
+      v-hover(v-for='(project, index) in projects')
+        template(v-slot='{ hover }')
+          v-card(:elevation="hover ? 12 : 2")
+            ProjectItem(
+              :key='project.id'
+              :name='project.name'
+              :id='project.id'
+              @openDialog='itemOpenDialog'
+            )
+    v-btn.blue.darken-2(width='100%' data-testId='openDialog' @click='openDialog')
+      v-icon.white--text mdi-plus
     DialogProjectItem(
       v-if='isOpen'
       :mode='mode'
@@ -70,3 +74,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.projectList {
+  overflow: auto;
+  height: 100%;
+}
+</style>

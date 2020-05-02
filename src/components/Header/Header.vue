@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app-bar(dark dense app fixed height=80)
       h1.font-weight-black.display-1
-        | Todo list
+        router-link(to='/' class='link') Todo list
       v-spacer
       v-col(md='3')
         v-text-field.searchInput(
@@ -60,3 +60,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.link {
+  text-decoration: none;
+}
+</style>

@@ -1,5 +1,6 @@
 <template lang="pug">
-  .todo-item(@click.self='openDialog') {{ name }}
+  .todo-item.d-flex.align-center.justify-space-between.px-12(@click.self='openDialog')
+    p.title.font-weight-bold.mb-0 {{ name }}
     v-checkbox.my-checkbox(:input-value='complete' @change='updateComplete')
 </template>
 
