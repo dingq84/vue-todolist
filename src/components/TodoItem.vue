@@ -19,7 +19,7 @@ export default {
     },
     complete: {
       type: Boolean,
-      default: false,
+      required: true,
     },
   },
   data() {

@@ -42,7 +42,7 @@
         div.d-flex.align-center.my-2
           label.mx-2.subtitle-2.text-no-wrap 完成
           v-checkbox(
-            :checked='complete'
+            :input-value='complete'
             @change='(value) => { $emit("update:complete", value) }'
             :disabled='!isEdit'
             data-testId='complete'
@@ -133,9 +133,7 @@ export default {
     },
   },
   data() {
-    return {
-      isEdit: ["create", "edit"].includes(this.mode),
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["priorityOptions", "projectsOptions"]),
@@ -149,6 +147,9 @@ export default {
     },
     isDisabled() {
       return Object.values(this.$props).some(props => !["isOpen", "mode"].includes(props) && props === "");
+    },
+    isEdit() {
+      return ["create", "edit"].includes(this.mode);
     },
   },
 };

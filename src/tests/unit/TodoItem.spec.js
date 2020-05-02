@@ -11,6 +11,7 @@ describe("TodoItem.vue", () => {
       propsData: {
         id: "11",
         name,
+        complete: false,
       },
     });
 
@@ -20,11 +21,11 @@ describe("TodoItem.vue", () => {
   describe("Toogle checkbox", () => {
     const mockUpdateComplete = jest.fn();
     const id = "123";
-    const completed = false;
+    const complete = false;
     const wrapper = mount(TodoItem, {
       propsData: {
         id: id,
-        completed,
+        complete,
         name: "Todo 1",
       },
       listeners: {
@@ -35,7 +36,7 @@ describe("TodoItem.vue", () => {
     checkbox.trigger("click");
 
     it("The checkbox should be checked", () => {
-      expect(checkbox.element.checked).not.toBe(completed);
+      expect(checkbox.element.checked).not.toBe(complete);
     });
 
     it("Clicking the checkbox should emit event to updateComplete", () => {
@@ -43,7 +44,7 @@ describe("TodoItem.vue", () => {
     });
 
     it("UpdateComplete arguments shoule be id", () => {
-      expect(mockUpdateComplete).toHaveBeenCalledWith(id, !completed);
+      expect(mockUpdateComplete).toHaveBeenCalledWith(id, !complete);
     });
   });
 
@@ -54,7 +55,7 @@ describe("TodoItem.vue", () => {
       propsData: {
         id,
         name: "TODO2",
-        completed: false,
+        complete: false,
       },
       listeners: {
         openDialog: mockOpenDialog,

@@ -3,22 +3,42 @@
     v-hover(v-for='todo in currentTodos' :key='todo.id')
       template(v-slot='{ hover }')
           v-card(:elevation="hover ? 12 : 2")
-            TodoItem(:id='todo.id' :name='todo.name' :completed='todo.complete' @updateComplete='updateComplete')
+            TodoItem(
+              :id='todo.id'
+              :name='todo.name'
+              :complete='todo.complete'
+              @updateComplete='updateComplete'
+              @openDialog='itemOpenDialog'
+            )
+    DialogTodoItem(
+      v-if='isOpen'
+      :isOpen.sync='isOpen'
+      v-bind.sync='dialogData'
+      :mode='mode'
+      data-testId='dialog'
+    )
+      v-btn(v-if='mode === "view"' text @click.native='mode = "edit"' data-testId='edit-button') 編輯
+      v-btn(v-else data-testId='submit-button' text @click.native='sumitData') 送出
 </template>
 
 <script>
 import TodoItem from "@/components/TodoItem";
+import DialogTodoItem from "@/components/DialogTodoItem";
 
 export default {
   name: "TodoList",
   components: {
     TodoItem,
+    DialogTodoItem,
   },
   props: {},
   data() {
     return {
       todos: this.$store.state.todo.todos,
       currentTodos: this.$store.state.todo.todos,
+      dialogData: "",
+      isOpen: false,
+      mode: "",
     };
   },
   computed: {},
@@ -46,6 +66,18 @@ export default {
     updateComplete(id, complete) {
       const endDate = complete ? new Date() : null;
       this.$store.dispatch("editTodoItem", { id, complete, endDate });
+    },
+    itemOpenDialog(id) {
+      const targetTodoItem = this.currentTodos.find(todo => todo.id === id);
+      this.isOpen = true;
+      this.dialogData = targetTodoItem;
+      this.mode = "view";
+    },
+    sumitData() {
+      this.$store.dispatch("editTodoItem", this.dialogData);
+      this.isOpen = false;
+      this.dialogData = "";
+      this.mode = "view";
     },
   },
 };

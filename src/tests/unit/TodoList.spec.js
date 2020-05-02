@@ -89,4 +89,51 @@ describe("TodoList.vue", () => {
       expect(wrapper.vm.currentTodos).toHaveLength(1);
     });
   });
+
+  describe("ItemOpenDialog testing", () => {
+    let wrapper;
+    let todoItem;
+    beforeAll(() => {
+      store = new Vuex.Store({ modules: { todo: todoStore, project: projectStore } });
+      // reset store state todo
+      store.state.todo.todos = [];
+      store.state.project.projects = [];
+      // add two project;
+      const projectA = store.getters.emptyProject();
+      projectA.name = "project-a";
+      store.dispatch("addProject", projectA);
+      todoItem = store.getters.emptyTodoItem();
+      todoItem.project = projectA.id;
+      todoItem.name = "todo-a";
+      store.dispatch("addTodoItem", todoItem);
+      wrapper = shallowMount(TodoList, { store });
+    });
+
+    it("The dialog does not exist default", () => {
+      expect(wrapper.find("[data-testId='dialog']").exists()).toBe(false);
+    });
+
+    it(`Trigger itemOpenDialog, the dialog should be openned,
+    the dialogData should equals todoItem, and the mode equals view`, async () => {
+      wrapper.vm.itemOpenDialog(todoItem.id);
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find("[data-testId='dialog']").exists()).toBe(true);
+      expect(wrapper.vm.dialogData).toBe(todoItem);
+      expect(wrapper.vm.mode).toBe("view");
+    });
+
+    it("Clicking the edit button, the submit button should exist", async () => {
+      const editButton = wrapper.find("[data-testId='edit-button']");
+      editButton.trigger("click");
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find("[data-testId='submit-button']").exists()).toBe(true);
+    });
+
+    it("Clicking the submit button, the todo item name should update as new-test-name", async () => {
+      wrapper.vm.dialogData.name = "new-test-name";
+      wrapper.find("[data-testId='submit-button']").trigger("click");
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.currentTodos.find(todo => todo.id === todoItem.id).name).toBe("new-test-name");
+    });
+  });
 });
