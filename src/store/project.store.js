@@ -30,7 +30,7 @@ export const projectStore = {
   },
   actions: {
     addProject(context, projectName) {
-      const filterProject = context.state.projects.filter(project => project.name === projectName);
+      const filterProject = context.state.projects.filter(project => project.name === projectName.name);
       if (filterProject.length !== 0) {
         throw new Error(`Project name ${projectName} is existed`);
       } else {

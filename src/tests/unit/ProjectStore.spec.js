@@ -33,8 +33,10 @@ describe("Project stroe", () => {
     });
 
     it("Adding duplicated project", () => {
+      const projectB = store.getters.emptyProject();
+      projectB.name = name;
       expect(() => {
-        store.dispatch("addProject", name);
+        store.dispatch("addProject", projectB);
       }).toThrow();
       store.dispatch("resetStore");
     });
@@ -42,8 +44,12 @@ describe("Project stroe", () => {
 
   describe("Remove project", () => {
     it("There are two project in store", () => {
-      store.dispatch("addProject", "project-a");
-      store.dispatch("addProject", "project-b");
+      const projectA = store.getters.emptyProject();
+      projectA.name = "project-a";
+      const projectB = store.getters.emptyProject();
+      projectB.name = "project-b";
+      store.dispatch("addProject", projectA);
+      store.dispatch("addProject", projectB);
       expect(store.state.projects).toHaveLength(2);
     });
 
@@ -77,8 +83,12 @@ describe("Project stroe", () => {
 
   describe("Getter testing", () => {
     it("ProjectsOptions should equal [{ value: project.id, text: project.name }, ]", () => {
-      store.dispatch("addProject", "project-a");
-      store.dispatch("addProject", "project-b");
+      const projecta = store.getters.emptyProject();
+      const projectb = store.getters.emptyProject();
+      projecta.name = "project-a";
+      projectb.name = "project-b";
+      store.dispatch("addProject", projecta);
+      store.dispatch("addProject", projectb);
       const projects = store.state.projects;
       expect(projects.map(project => ({ value: project.id, text: project.name }))).toEqual(store.getters.projectsOptions);
       store.dispatch("resetStore");

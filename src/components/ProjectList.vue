@@ -7,7 +7,6 @@
         template(v-slot='{ hover }')
           v-card(:elevation="hover ? 12 : 2")
             ProjectItem(
-              v-for='(project, index) in projects' :key='project.id'
               :name='project.name'
               :id='project.id'
               @openDialog='itemOpenDialog'
