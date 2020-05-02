@@ -3,11 +3,11 @@
     h2.font-weight-bold.headline(data-testId='title') 專案列表
     v-divider.mt-2.mb-4
     div.projectList
-      v-hover(v-for='(project, index) in projects')
+      v-hover(v-for='(project, index) in projects' :key='project.id')
         template(v-slot='{ hover }')
           v-card(:elevation="hover ? 12 : 2")
             ProjectItem(
-              :key='project.id'
+              v-for='(project, index) in projects' :key='project.id'
               :name='project.name'
               :id='project.id'
               @openDialog='itemOpenDialog'

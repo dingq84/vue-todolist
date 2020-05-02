@@ -41,7 +41,7 @@ describe("ProjectList.vue", () => {
     });
   });
 
-  describe.only("Adding project to store", () => {
+  describe("Adding project to store", () => {
     let wrapper;
     beforeAll(async () => {
       wrapper = mount(ProjectList, {
@@ -82,6 +82,8 @@ describe("ProjectList.vue", () => {
       vuetify,
       router,
     });
+    const mockItemOpenDialog = jest.spyOn(wrapper.vm, "itemOpenDialog");
+    wrapper.setMethods({ itemOpenDialog: mockItemOpenDialog });
     it("Title should contain 專案", () => {
       const title = wrapper.find("[data-testId='title']");
       expect(title.text()).toContain("專案");
@@ -93,13 +95,11 @@ describe("ProjectList.vue", () => {
     });
 
     it("ProjectList should catch the event from ProjectItem", async () => {
-      const mockOpenDialog = jest.spyOn(wrapper.vm, "itemOpenDialog");
-      wrapper.setMethods({ itemOpenDialog: mockOpenDialog });
       const projectItem = wrapper.find({ name: "ProjectItem" });
       const openDialogButton = projectItem.find("[data-testId='openDialog']");
       openDialogButton.trigger("click");
       await wrapper.vm.$nextTick();
-      expect(mockOpenDialog).toHaveBeenCalledWith(wrapper.vm.projects[0]);
+      expect(mockItemOpenDialog).toHaveBeenCalledWith(wrapper.vm.projects[0]);
     });
   });
 

@@ -1,9 +1,9 @@
 <template lang="pug">
   .todo-list
-    v-hover(v-for='todo in todos')
+    v-hover(v-for='todo in todos' :key='todo.id')
       template(v-slot='{ hover }')
           v-card(:elevation="hover ? 12 : 2")
-            TodoItem(:key='todo.id' :id='todo.id' :name='todo.name' :completed='todo.complete' @updateComplete='updateComplete')
+            TodoItem(:id='todo.id' :name='todo.name' :completed='todo.complete' @updateComplete='updateComplete')
 </template>
 
 <script>

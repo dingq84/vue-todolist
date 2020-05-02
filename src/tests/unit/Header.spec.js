@@ -1,11 +1,11 @@
 import Vuex from "vuex";
 import Vuetify from "vuetify";
-import { shallowMount, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 
 import { todoStore } from "@/store/todo.store.js";
 import { priorityStore } from "@/store/priority.store.js";
 import { projectStore } from "@/store/project.store.js";
-
+import router from "@/router";
 import Header from "@/components/Header";
 
 const store = new Vuex.Store({ modules: { todo: todoStore, priority: priorityStore, project: projectStore } });
@@ -18,9 +18,7 @@ describe("Header.vue", () => {
       wrapper = mount(Header, {
         store,
         vuetify,
-        scopedSlots: {
-          default: "<p>{{props.isDisabled}}</p>",
-        },
+        router,
       });
       const addingBtn = wrapper.find(".addBtn");
       addingBtn.trigger("click");
@@ -49,24 +47,26 @@ describe("Header.vue", () => {
   });
 
   describe("Searching todo item", () => {
-    const mockRouterPush = jest.fn();
-    const wrapper = shallowMount(Header, {
-      store,
-      mocks: {
-        $router: {
-          push: mockRouterPush,
-        },
-      },
+    let wrapper;
+    let mockSearchFunction;
+    beforeAll(() => {
+      const vuetify = new Vuetify();
+      wrapper = mount(Header, {
+        store,
+        vuetify,
+        router,
+      });
+      mockSearchFunction = jest.spyOn(wrapper.vm, "searchTodo");
     });
-    const mockSearchFunction = jest.spyOn(wrapper.vm, "searchTodo");
-    const searchInput = wrapper.find(".searchInput");
     it("Should not trigger search function with not entering anything", async () => {
+      const searchInput = wrapper.find(".searchInput");
       searchInput.trigger("keydown.enter");
       await wrapper.vm.$nextTick();
       expect(mockSearchFunction).not.toBeCalled();
     });
 
     it("Pressing enter should trigger search function", async () => {
+      const searchInput = wrapper.find(".searchInput");
       wrapper.vm.search = "test";
       searchInput.trigger("keydown.enter");
       await wrapper.vm.$nextTick();
@@ -74,7 +74,8 @@ describe("Header.vue", () => {
     });
 
     it("Router should push to search url ", () => {
-      expect(mockRouterPush).toHaveBeenCalledWith({ path: "/search", query: { name: "test" } });
+      expect(wrapper.vm.$route.query).toMatchObject({ name: "test" });
+      expect(wrapper.vm.$route.path).toBe("/search");
     });
   });
 });
