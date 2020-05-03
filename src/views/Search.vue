@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    h1 Search
+    p.display-1.font-weight-bold 搜尋結果
     TodoList
 </template>
 <script>

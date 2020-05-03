@@ -19,6 +19,10 @@ describe("Project stroe", () => {
     },
   });
 
+  it("Initailize project store", () => {
+    store.dispatch("initProject", []);
+    expect(store.state.projects).toEqual([]);
+  });
   describe("Adding project", () => {
     it("Projects is empty default", () => {
       expect(store.state.projects).toEqual([]);

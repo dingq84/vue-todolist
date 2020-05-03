@@ -5,7 +5,7 @@
     div.projectList
       v-hover(v-for='(project, index) in projects' :key='project.id')
         template(v-slot='{ hover }')
-          v-card(:elevation="hover ? 12 : 2")
+          v-card.teal.accent-1(:elevation="hover ? 12 : 2")
             ProjectItem(
               :name='project.name'
               :id='project.id'
@@ -55,7 +55,6 @@ export default {
       return this.$store.state.project.projects;
     },
   },
-  watch: {},
   methods: {
     itemOpenDialog(project) {
       this.isOpen = true;

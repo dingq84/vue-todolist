@@ -20,6 +20,11 @@ describe("Todo store", () => {
     },
   });
 
+  it("Initialize store", () => {
+    store.dispatch("initTodoItem", []);
+    expect(store.state.todos).toEqual([]);
+  });
+
   describe("Adding todo item", () => {
     it("Todolist is empty default", () => {
       expect(store.state.todos).toEqual([]);

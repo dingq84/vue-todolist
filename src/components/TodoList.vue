@@ -1,8 +1,9 @@
 <template lang="pug">
   .todo-list
-    v-hover(v-for='todo in currentTodos' :key='todo.id')
+    p.ml-4.title.font-weight-normal(v-if='currentTodos.length === 0') 沒有符合的待辦事項
+    v-hover.my-4.mx-2(v-for='todo in currentTodos' :key='todo.id')
       template(v-slot='{ hover }')
-          v-card(:elevation="hover ? 12 : 2")
+          v-card.indigo.accent-4(:elevation="hover ? 12 : 2")
             TodoItem(
               :id='todo.id'
               :name='todo.name'
@@ -17,8 +18,8 @@
       :mode='mode'
       data-testId='dialog'
     )
-      v-btn(v-if='mode === "view"' text @click.native='mode = "edit"' data-testId='edit-button') 編輯
-      v-btn(v-else data-testId='submit-button' text @click.native='sumitData') 送出
+      v-btn(v-if='mode === "view"' color='primary' text @click.native='mode = "edit"' data-testId='edit-button') 編輯
+      v-btn(v-else data-testId='submit-button' color='primary' text @click.native='sumitData') 送出
 </template>
 
 <script>
@@ -34,15 +35,21 @@ export default {
   props: {},
   data() {
     return {
-      todos: this.$store.state.todo.todos,
       currentTodos: this.$store.state.todo.todos,
       dialogData: "",
       isOpen: false,
       mode: "",
     };
   },
-  computed: {},
+  computed: {
+    todos() {
+      return this.$store.state.todo.todos;
+    },
+  },
   watch: {
+    todos(data) {
+      this.currentTodos = data;
+    },
     $route(to) {
       const {
         path,

@@ -135,6 +135,15 @@ export default {
   data() {
     return {};
   },
+  watch: {
+    complete(val) {
+      if (val) {
+        this.$emit("update:endDate", new Date());
+      } else {
+        this.$emit("update:endDate", null);
+      }
+    },
+  },
   computed: {
     ...mapGetters(["priorityOptions", "projectsOptions"]),
     _isOpen: {
