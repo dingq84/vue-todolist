@@ -51,7 +51,9 @@ export default {
       this.item = this.$store.getters.emptyTodoItem();
     },
     searchTodo() {
-      const { query: project } = this.$route;
+      const {
+        query: { project },
+      } = this.$route;
       if (project) {
         this.$router.push({ path: "/search", query: { name: this.search, ...project } });
       } else {
