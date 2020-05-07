@@ -10,7 +10,7 @@
           solo
           placeholder="搜尋名稱或內容"
           hide-details
-          @keydown.enter.native='(event) => search && searchTodo(event)'
+          @keydown.enter.native='searchTodo'
         )
       v-btn.addBtn(icon @click.native='openDialog')
         v-icon
@@ -51,14 +51,9 @@ export default {
       this.item = this.$store.getters.emptyTodoItem();
     },
     searchTodo() {
-      const {
-        query: { project },
-      } = this.$route;
-      if (project) {
-        this.$router.push({ path: "/search", query: { name: this.search, ...project } });
-      } else {
-        this.$router.push({ path: "/search", query: { name: this.search } });
-      }
+      const { query } = this.$route;
+      if (this.search === query.name) return;
+      this.$router.push({ path: "/search", query: { ...query, name: this.search } });
     },
     addTodoItem() {
       this.$store.dispatch("addTodoItem", this.item);

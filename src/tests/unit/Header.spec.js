@@ -48,7 +48,6 @@ describe("Header.vue", () => {
 
   describe("Searching todo item", () => {
     let wrapper;
-    let mockSearchFunction;
     beforeAll(() => {
       const vuetify = new Vuetify();
       wrapper = mount(Header, {
@@ -56,24 +55,19 @@ describe("Header.vue", () => {
         vuetify,
         router,
       });
-      mockSearchFunction = jest.spyOn(wrapper.vm, "searchTodo");
     });
     it("Should not trigger search function with not entering anything", async () => {
       const searchInput = wrapper.find(".searchInput");
       searchInput.trigger("keydown.enter");
       await wrapper.vm.$nextTick();
-      expect(mockSearchFunction).not.toBeCalled();
+      expect(wrapper.vm.$route.query).toMatchObject({ name: "" });
     });
 
-    it("Pressing enter should trigger search function", async () => {
+    it("Router should push to search url ", async () => {
       const searchInput = wrapper.find(".searchInput");
       wrapper.vm.search = "test";
       searchInput.trigger("keydown.enter");
       await wrapper.vm.$nextTick();
-      expect(mockSearchFunction).toHaveBeenCalledTimes(1);
-    });
-
-    it("Router should push to search url ", () => {
       expect(wrapper.vm.$route.query).toMatchObject({ name: "test" });
       expect(wrapper.vm.$route.path).toBe("/search");
     });

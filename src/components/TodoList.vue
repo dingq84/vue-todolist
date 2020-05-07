@@ -46,6 +46,13 @@ export default {
       return this.$store.state.todo.todos;
     },
   },
+  mounted() {
+    const {
+      path,
+      query: { name, project },
+    } = this.$route;
+    this.filterTodoItems(path, name, project);
+  },
   watch: {
     todos(data) {
       this.currentTodos = data;
@@ -55,18 +62,7 @@ export default {
         path,
         query: { name, project },
       } = to;
-      if (path === "/search") {
-        if (name && project) {
-          const targetProject = this.$store.state.project.projects.filter(p => p.name === project)[0];
-          const result = this.todos.filter(todo => todo.name.indexOf(name) !== -1);
-          this.currentTodos = result.filter(todo => todo.project === targetProject.id);
-        } else if (name) {
-          this.currentTodos = this.todos.filter(todo => todo.name.indexOf(name) !== -1);
-        } else {
-          const targetProject = this.$store.state.project.projects.filter(p => p.name === project)[0];
-          this.currentTodos = this.todos.filter(todo => todo.project === targetProject.id);
-        }
-      }
+      this.filterTodoItems(path, name, project);
     },
   },
   methods: {
@@ -85,6 +81,22 @@ export default {
       this.isOpen = false;
       this.dialogData = "";
       this.mode = "view";
+    },
+    filterTodoItems(path, name, project) {
+      if (path === "/search") {
+        if (name && project) {
+          const targetProject = this.$store.state.project.projects.filter(p => p.name === project)[0];
+          const result = this.todos.filter(todo => todo.name.indexOf(name) !== -1);
+          this.currentTodos = result.filter(todo => todo.project === targetProject.id);
+        } else if (name) {
+          this.currentTodos = this.todos.filter(todo => todo.name.indexOf(name) !== -1);
+        } else if (project) {
+          const targetProject = this.$store.state.project.projects.filter(p => p.name === project)[0];
+          this.currentTodos = this.todos.filter(todo => todo.project === targetProject.id);
+        } else {
+          this.currentTodos = this.todos;
+        }
+      }
     },
   },
 };
