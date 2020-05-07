@@ -12,26 +12,26 @@ describe("TodoList.vue", () => {
   let store;
   beforeAll(() => {
     vuetify = new Vuetify();
-    store = new Vuex.Store({ modules: { todo: todoStore } });
+    store = new Vuex.Store({ modules: { todo: todoStore, project: projectStore } });
     store.dispatch("addTodoItem", store.getters.emptyTodoItem());
     store.dispatch("addTodoItem", store.getters.emptyTodoItem());
   });
 
   describe("Name of the group", () => {
     it("Should be two todoitem", () => {
-      const wrapper = mount(TodoList, { store, vuetify });
+      const wrapper = mount(TodoList, { store, vuetify, router });
       expect(wrapper.findAll({ name: "TodoItem" }).length).toBe(2);
     });
   });
 
   describe("TodoItem emit the updateComplete event to TodoList", () => {
     it("Both todo item of complete are false", () => {
-      const wrapper = shallowMount(TodoList, { store });
+      const wrapper = shallowMount(TodoList, { store, router });
       expect(wrapper.vm.todos.filter(todo => !todo.complete)).toHaveLength(2);
     });
 
     it("Trigger updateComplete to toggle complete", async () => {
-      const wrapper = mount(TodoList, { store, vuetify });
+      const wrapper = mount(TodoList, { store, vuetify, router });
       const todoItem = wrapper.find({ name: "TodoItem" });
       todoItem.vm.$emit("updateComplete", todoItem.vm.id, !todoItem.vm.complete);
       await wrapper.vm.$nextTick();
@@ -106,7 +106,7 @@ describe("TodoList.vue", () => {
       todoItem.project = projectA.id;
       todoItem.name = "todo-a";
       store.dispatch("addTodoItem", todoItem);
-      wrapper = shallowMount(TodoList, { store });
+      wrapper = shallowMount(TodoList, { store, router });
     });
 
     it("The dialog does not exist default", () => {
