@@ -23,12 +23,21 @@
     )
       template(v-slot='{ isDisabled }')
         v-btn(
+          v-if='mode === "create"'
           @click='addProjectItem'
           :disabled='isDisabled'
           data-testId='adding-button'
           color='primary' 
           text
         )  新增
+        v-btn(
+          v-else
+          @click='editProjectItem'
+          :disabled='isDisabled'
+          data-testId='editting-button'
+          color='primary'
+          text
+        ) 編輯
 </template>
 
 <script>
@@ -55,11 +64,16 @@ export default {
       return this.$store.state.project.projects;
     },
   },
+  watch: {
+    isOpen() {
+      this.error = "";
+    },
+  },
   methods: {
     itemOpenDialog(project) {
       this.isOpen = true;
       this.mode = "edit";
-      this.dialogData = project;
+      this.dialogData = { ...project };
     },
     openDialog() {
       this.isOpen = true;
@@ -68,8 +82,17 @@ export default {
     },
     addProjectItem() {
       try {
-        console.log(this.dialogData.name);
         this.$store.dispatch("addProject", this.dialogData);
+        this.dialogData = "";
+        this.isOpen = false;
+      } catch (error) {
+        console.log(error);
+        this.error = "專案名稱已存在";
+      }
+    },
+    editProjectItem() {
+      try {
+        this.$store.dispatch("editProject", this.dialogData);
         this.dialogData = "";
         this.isOpen = false;
       } catch (error) {
